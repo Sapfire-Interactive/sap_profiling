@@ -16,16 +16,18 @@ set(SAP_PROFILING_BUILD_SHARED !${SAP_PROFILING_BUILD_STATIC})
 
 set(SAP_CORE_BUILD_STATIC ${SAP_PROFILING_BUILD_STATIC})
 set(SAP_CORE_BUILD_SHARED ${SAP_PROFILING_BUILD_SHARED})
-include_directories(sap_core)
+add_subdirectory(sap_core)
 
 set(SAP_PROFILING_HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/types.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/result.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/instrumentor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/instrumentation_timer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/utils.h
 )
 
 set(SAP_PROFILING_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/job_system.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/serialization.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/instrumentor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/instrumentation_timer.cpp
+)
 
 if(SAP_PROFILING_BUILD_SHARED)
     add_library(sap_profiling_shared SHARED 
@@ -34,9 +36,7 @@ if(SAP_PROFILING_BUILD_SHARED)
     target_include_directories(sap_profiling_shared
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sap_core/include>
             $<INSTALL_INTERFACE:include>
-            $<INSTALL_INTERFACE:sap_core/include>
     )
 
     set_target_properties(sap_profiling_shared PROPERTIES
@@ -44,6 +44,8 @@ if(SAP_PROFILING_BUILD_SHARED)
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
     )
+
+    target_link_libraries(sap_profiling_shared PUBLIC sap::core)
 endif()
 
 if(SAP_PROFILING_BUILD_STATIC)
@@ -59,6 +61,7 @@ if(SAP_PROFILING_BUILD_STATIC)
         ARCHIVE_OUTPUT_NAME sap_profiling_static
     )
 
+    target_link_libraries(sap_profiling_static PUBLIC sap::core)
 endif()
 
 if(SAP_PROFILING_BUILD_SHARED)
@@ -66,8 +69,6 @@ if(SAP_PROFILING_BUILD_SHARED)
 elseif(SAP_PROFILING_BUILD_STATIC)
     add_library(sap::profiling ALIAS sap_profiling_static)
 endif()
-
-target_link_libraries(sap::profiling PUBLIC sap::core)
 
 
 if(SAP_PROFILING_INSTALL)
