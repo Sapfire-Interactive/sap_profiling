@@ -29,7 +29,7 @@
 #define PROFILE_END_SESSION() ::sap::prof::Instrumentor::get().end_session()
 #define PROFILE_SCOPE_LINE2(name, line)                                                                                                    \
     constexpr auto fixedName##line = ::sap::prof::cleanup_output_string(name, "__cdecl ");                                                 \
-    ::sap::prof::InstrumentationTimer timer##line(fixedName##line.Data)
+    ::sap::prof::InstrumentationTimer timer##line(fixedName##line.data)
 #define PROFILE_SCOPE_LINE(name, line) PROFILE_SCOPE_LINE2(name, line)
 #define PROFILE_SCOPE(name) PROFILE_SCOPE_LINE(name, __LINE__)
 #define PROFILE_FUNCTION() PROFILE_SCOPE(FUNC_SIG)

@@ -9,7 +9,7 @@ namespace sap::prof {
     };
 
     template <stl::size_t N, stl::size_t K>
-    constexpr auto cleanup_output_string(const char (&expr)[N], const char (&remove)[N]) {
+    constexpr auto cleanup_output_string(const char (&expr)[N], const char (&remove)[K]) {
         ChangeResult<N> result = {};
         size_t src_index = 0;
         size_t dst_index = 0;
