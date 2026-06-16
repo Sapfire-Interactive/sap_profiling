@@ -12,7 +12,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 option(SAP_PROFILING_BUILD_STATIC "Build static library" ON)
 option(SAP_PROFILING_INSTALL "Install library" ON)
 
-set(SAP_PROFILING_BUILD_SHARED !${SAP_PROFILING_BUILD_STATIC})
+if(SAP_PROFILING_BUILD_STATIC)
+    set(SAP_PROFILING_BUILD_SHARED OFF)
+else()
+    set(SAP_PROFILING_BUILD_SHARED ON)
+endif()
 
 set(SAP_CORE_BUILD_STATIC ${SAP_PROFILING_BUILD_STATIC})
 set(SAP_CORE_BUILD_SHARED ${SAP_PROFILING_BUILD_SHARED})
@@ -46,6 +50,9 @@ if(SAP_PROFILING_BUILD_SHARED)
     )
 
     target_link_libraries(sap_profiling_shared PUBLIC sap::core)
+    if(SAP_PROFILE)
+        target_compile_definitions(sap_profiling_shared PUBLIC SAP_PROFILE=1)
+    endif()
 endif()
 
 if(SAP_PROFILING_BUILD_STATIC)
@@ -62,6 +69,9 @@ if(SAP_PROFILING_BUILD_STATIC)
     )
 
     target_link_libraries(sap_profiling_static PUBLIC sap::core)
+    if(SAP_PROFILE)
+        target_compile_definitions(sap_profiling_static PUBLIC SAP_PROFILE=1)
+    endif()
 endif()
 
 if(SAP_PROFILING_BUILD_SHARED)

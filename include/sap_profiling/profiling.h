@@ -1,9 +1,9 @@
 #pragma once
+#if SAP_PROFILE
 #include "sap_profiling/instrumentation_timer.h"
 #include "sap_profiling/instrumentor.h"
 #include "sap_profiling/utils.h"
 
-#if SAP_PROFILE
 // Resolve which function signature macro will be used. Note that this only
 // is resolved when the (pre)compiler starts, so the syntax highlighting
 // could mark the wrong one in your editor!
