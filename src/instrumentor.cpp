@@ -1,6 +1,7 @@
 #include "sap_profiling/instrumentor.h"
 
 #include <sap_core/log.h>
+#include <sap_core/stl/fixed_string.h>
 #include <sstream>
 
 namespace sap::prof {
@@ -16,9 +17,14 @@ namespace sap::prof {
                        m_session->name);
             end_session_no_lock();
         }
-        m_output_stream.open(name.data());
+        if (filepath.empty() || filepath.size() > 4096) {
+            log::error("Invalid profiling output path.");
+            return;
+        }
+        const stl::fixed_string<4096> output_path(filepath);
+        m_output_stream.open(output_path.c_str());
         if (!m_output_stream.is_open()) {
-            log::error("Failed to open file at path {}.", name);
+            log::error("Failed to open file at path {}.", filepath);
             return;
         }
 

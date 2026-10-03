@@ -20,7 +20,9 @@ endif()
 
 set(SAP_CORE_BUILD_STATIC ${SAP_PROFILING_BUILD_STATIC})
 set(SAP_CORE_BUILD_SHARED ${SAP_PROFILING_BUILD_SHARED})
-add_subdirectory(sap_core)
+if(NOT TARGET sap::core)
+    add_subdirectory(sap_core)
+endif()
 
 set(SAP_PROFILING_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/sap_profiling/instrumentor.h

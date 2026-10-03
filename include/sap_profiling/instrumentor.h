@@ -9,7 +9,7 @@
 namespace sap::prof {
 
     struct ProfileResult {
-        stl::string name;
+        stl::basic_string<std::allocator<char>> name;
         std::chrono::duration<f64, std::micro> start;
         std::chrono::microseconds duration;
         stl::thread::id thread_id;
@@ -18,7 +18,7 @@ namespace sap::prof {
     // This exists so we don't have to check whether the file is open or not
     // generally cheaper than caching string + bool (probably - doesn't matter because profiling builds anyway)
     struct Session {
-        stl::string name;
+        stl::basic_string<std::allocator<char>> name;
     };
 
     class Instrumentor {
