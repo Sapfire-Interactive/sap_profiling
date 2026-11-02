@@ -2,9 +2,9 @@
 
 #include <chrono>
 #include <fstream>
+#include <memory>
 #include <sap_core/stl/string.h>
 #include <sap_core/types.h>
-#include <sap_core/stl/unique_ptr.h>
 
 namespace sap::prof {
 
@@ -40,6 +40,7 @@ namespace sap::prof {
     private:
         stl::mutex m_mutex;
         std::ofstream m_output_stream;
-        stl::unique_ptr<Session> m_session{nullptr};
+        // Profiling sessions can outlive the engine memory categories.
+        std::unique_ptr<Session> m_session{nullptr};
     };
 } // namespace sap::prof

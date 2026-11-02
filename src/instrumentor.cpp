@@ -28,7 +28,7 @@ namespace sap::prof {
             return;
         }
 
-        m_session = stl::make_unique<Session>(name);
+        m_session = std::make_unique<Session>(name);
         write_header();
     }
 
